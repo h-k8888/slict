@@ -171,7 +171,7 @@ private:
     int last_fixed_knot = 0;
     int first_fixed_knot = 0;
 
-    double leaf_size = 0.1;
+    double leaf_size = 0.1; //ntu viral 0.05
     double assoc_spacing = 0.2;
     int surfel_map_depth = 5;
     int surfel_min_point = 5;
@@ -276,6 +276,7 @@ private:
     ros::Publisher global_map_pub;
     bool publish_map = false;
 
+    ////////todo
     // Keyframe params
     double kf_min_dis = 0.5;
     double kf_min_angle = 10;
@@ -1659,6 +1660,7 @@ public:
                 break;
             }
         }
+        //todo cancel in the experiment
         bool kf_timeout = fabs(kf_cand_time - last_kf_time) > 2.0 && (knn_sq_dis.front() > 0.1*0.1);
 
         if (far_distance || far_angle || kf_timeout)

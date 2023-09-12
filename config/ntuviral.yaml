@@ -50,6 +50,7 @@ WINDOW_SIZE:        4
 # Number of substates to give to each packet
 N_SUB_SEG:          4
 
+########### todo leaf_size   ##########
 # Downsampling grid size, chose -1 for no downsampling
 leaf_size:          0.05          # Downsample scale of input pointcloud, also the scale of ufomap leaf
 assoc_spacing:      0.8
@@ -71,6 +72,7 @@ ds_rate:            [
                       2
                     ]
 
+###### todo keyframe threshold #####
 # Threshold to add new keyframe
 kf_min_dis:         0.5
 kf_min_angle:       10
@@ -96,7 +98,7 @@ max_outer_iters:    3
 max_lidar_factor:   4000  # Maximum number of lidar factors
 
 # Loop closure parameters
-loop_en:            1    # Enable loop closure
+loop_en:            0    # Enable loop closure
 loop_kf_nbr:        10   # Number of neighbour to check for loop closure
 loop_time_mindiff:  10   # Only check for loop when keyframes have this much difference
 
