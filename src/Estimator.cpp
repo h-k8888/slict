@@ -2558,6 +2558,24 @@ public:
         printf("Logging cloud pose: %s.\n", (log_dir + "/KfCloudPose.pcd").c_str());
         PCDWriter writer; writer.writeASCII(log_dir + "/KfCloudPose.pcd", *KfCloudPose, 18); 
 
+        // TUM format for evo
+        printf("\n..............Saving path................\n");
+        ofstream of("/tmp/path.txt");
+        if (of.is_open())
+        {
+            of.setf(ios::fixed, ios::floatfield);
+            of.precision(6);
+            for (int i = 0; i < (int)KfCloudPose->points.size(); ++i) {
+                auto pose = KfCloudPose->points[i];
+
+                of<< pose.t << " "
+                  << pose.x<< " " << pose.y << " " << pose.z << " "
+                  << pose.qx<< " "<< pose.qy << " " << pose.qz << " "<< pose.qw << "\n";
+            }
+            of.close();
+        }
+
+
         printf(KGRN "Logging the map completed.\n" RESET);
 
         printf(KYEL "Logging the loop ...\n" RESET);
