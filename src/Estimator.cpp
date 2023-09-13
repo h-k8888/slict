@@ -2556,11 +2556,16 @@ public:
         printf(KYEL "Logging the map start ...\n" RESET);
 
         printf("Logging cloud pose: %s.\n", (log_dir + "/KfCloudPose.pcd").c_str());
-        PCDWriter writer; writer.writeASCII(log_dir + "/KfCloudPose.pcd", *KfCloudPose, 18); 
+        PCDWriter writer;
+        if (KfCloudPose->size() > 0)
+            writer.writeASCII(log_dir + "/KfCloudPose.pcd", *KfCloudPose, 18);
 
         // TUM format for evo
         printf("\n..............Saving path................\n");
-        ofstream of(log_dir + "/path.txt");
+        string path_file = (log_dir + "/path.txt");
+        printf("Trajectory file: %s.\n", path_file.c_str());
+
+        ofstream of(path_file);
         if (of.is_open())
         {
             of.setf(ios::fixed, ios::floatfield);
