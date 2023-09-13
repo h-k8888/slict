@@ -212,6 +212,8 @@ private:
     deque<CloudXYZITPtr> KfCloudinB;
     deque<CloudXYZITPtr> KfCloudinW;
 
+    CloudPosePtr         key_frames_evo;
+
     int    ufomap_version = 0;
     mutex  global_map_mtx;
     TicToc tt_ufmupdt;
@@ -445,6 +447,8 @@ public:
         KfCloudPose = CloudPosePtr(new CloudPose());
         globalMap = CloudXYZITPtr(new CloudXYZIT());
         surfelMap = ufoSurfelMap(leaf_size, surfel_map_depth);
+
+        key_frames_evo = CloudPosePtr(new CloudPose());
 
         // Advertise the global map
         global_map_pub = nh_ptr->advertise<sensor_msgs::PointCloud2>("/global_map", 10);
@@ -1633,7 +1637,7 @@ public:
         kdTreeKeyFrames.setInputCloud(kfTempPose);
 
         myTf tf_W_Bcand(sfQua[mid_step].back(), sfPos[mid_step].back());
-        PointPose kf_cand = tf_W_Bcand.Pose6D(kf_cand_time);
+        PointPose kf_cand = tf_W_Bcand.Pose6D(kf_cand_time); //todo
 
         int knn_nbrkf = min(10, (int)kfTempPose->size());
         vector<int> knn_idx(knn_nbrkf); vector<float> knn_sq_dis(knn_nbrkf);
@@ -1737,6 +1741,41 @@ public:
             margPerc = 100.0*margCount / pointsTotal;
             AdmitKeyframe(SwTimeStep[mid_step].back().final_time, sfQua[mid_step].back(), sfPos[mid_step].back(),
                           SwCloudDsk[mid_step], marginalizedCloud);
+        }
+
+        //todo pose for evo
+        {
+            double t = SwTimeStep[mid_step].back().final_time;
+            Quaternd q = sfQua[mid_step].back();
+            Vector3d p = sfPos[mid_step].back();
+            if (key_frames_evo->size() == 0) {
+                key_frames_evo.push_back(myTf(q, p).Pose6D(t));
+                key_frames_evo->points.back().intensity =
+                        key_frames_evo->size() - 1;   // Use intensity to store keyframe id
+            } else {
+                const PointPose& kf_last = key_frames_evo->points.back(); //todo
+                Vector3d d_p;
+                d_p << kf_last.x, kf_last.y, kf_last.z;
+                d_p = d_p - p;
+                bool far_distance = d_p.norm() > kf_min_dis;
+
+//                // Collect the angle difference
+//                Quaternionf Qa(kfTempPose->points[kf_idx].qw,
+//                               kfTempPose->points[kf_idx].qx,
+//                               kfTempPose->points[kf_idx].qy,
+//                               kfTempPose->points[kf_idx].qz);
+
+                Quaternionf Qb(kf_last.qw, kf_last.qx, kf_last.qy, kf_last.qz);
+                bool large_angle = false;
+                // If the angle is more than 10 degrees, add this to the key pose
+                if (fabs(Util::angleDiff(q, Qb)) > kf_min_angle)
+                    large_angle = true;
+
+                if (far_distance || large_angle)
+                {
+                    key_frames_evo->push_back(myTf(q, p).Pose6D(t));
+                }
+            }
         }
     }
 
@@ -2570,8 +2609,8 @@ public:
         {
             of.setf(ios::fixed, ios::floatfield);
             of.precision(6);
-            for (int i = 0; i < (int)KfCloudPose->points.size(); ++i) {
-                auto pose = KfCloudPose->points[i];
+            for (int i = 0; i < (int)key_frames_evo->points.size(); ++i) {
+                auto pose = key_frames_evo->points[i];
 
                 of<< pose.t << " "
                   << pose.x<< " " << pose.y << " " << pose.z << " "
