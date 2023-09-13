@@ -1768,7 +1768,7 @@ public:
                 Quaternionf Qb(kf_last.qw, kf_last.qx, kf_last.qy, kf_last.qz);
                 bool large_angle = false;
                 // If the angle is more than 10 degrees, add this to the key pose
-                if (fabs(Util::angleDiff(q, Qb)) > kf_min_angle)
+                if (fabs(Util::angleDiff(q.cast<float>(), Qb)) > kf_min_angle)
                     large_angle = true;
 
                 if (far_distance || large_angle)
