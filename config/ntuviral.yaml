@@ -52,7 +52,7 @@ N_SUB_SEG:          4
 
 ########### todo leaf_size   ##########
 # Downsampling grid size, chose -1 for no downsampling
-leaf_size:          0.05          # Downsample scale of input pointcloud, also the scale of ufomap leaf
+leaf_size:          0.5          # Downsample scale of input pointcloud, also the scale of ufomap leaf, original 0.05
 assoc_spacing:      0.8
 surfel_map_depth:   16
 surfel_min_point:   10
@@ -74,7 +74,7 @@ ds_rate:            [
 
 ###### todo keyframe threshold #####
 # Threshold to add new keyframe
-kf_min_dis:         0.5
+kf_min_dis:         1.0
 kf_min_angle:       10
 
 # Optimization parameters
