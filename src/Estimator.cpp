@@ -1749,7 +1749,7 @@ public:
             Quaternd q = sfQua[mid_step].back();
             Vector3d p = sfPos[mid_step].back();
             if (key_frames_evo->size() == 0) {
-                key_frames_evo.push_back(myTf(q, p).Pose6D(t));
+                key_frames_evo->push_back(myTf(q, p).Pose6D(t));
                 key_frames_evo->points.back().intensity =
                         key_frames_evo->size() - 1;   // Use intensity to store keyframe id
             } else {
