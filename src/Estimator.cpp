@@ -2560,7 +2560,7 @@ public:
 
         // TUM format for evo
         printf("\n..............Saving path................\n");
-        ofstream of("/tmp/path.txt");
+        ofstream of(log_dir + "/path.txt");
         if (of.is_open())
         {
             of.setf(ios::fixed, ios::floatfield);
