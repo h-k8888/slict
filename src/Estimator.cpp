@@ -293,7 +293,8 @@ private:
     std::ofstream loop_log_file;
 
     // for ground truth evaluation
-    Matrix4d extrinsic_prism;
+    Matrix4d extrinsic_prism, r_bs;
+    Vector3d t_bs;
 public:
     // Destructor
     ~Estimator() {}
@@ -478,9 +479,16 @@ public:
         //        prism_extr
         vector<double> prism_extr = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
         nh_ptr->getParam("/prism_extr", prism_extr);
-        extrinsic_prism = Matrix<double, 4, 4, RowMajor>(&prism_extr);
+        extrinsic_prism = Matrix<double, 4, 4, RowMajor>(&prism_extr[0]);
         cout << "extrinsic_prism: " << endl;
         cout << extrinsic_prism << endl;
+        Vector3d t_bs = extrinsic_prism.block<3, 1>(0, 3);
+        cout << "prism t: " << endl;
+        cout << t_bs.transpose() << endl;
+        Matrix<double, 3, 3> r_bs = extrinsic_prism.block<3, 3>(0,0);
+        cout << "prism rotation: " << endl;
+        cout << r_bs << endl;
+
     }
 
     bool GetBoolParam(string param, bool default_value)
@@ -1757,6 +1765,13 @@ public:
             double t = SwTimeStep[mid_step].back().final_time;
             Quaternd q = sfQua[mid_step].back();
             Vector3d p = sfPos[mid_step].back();
+
+            // prism = r_wb * t_bs + t_wb
+            Vector3d p_prism = q * t_bs + p;
+            Quaternd q_prism = q * r_bs;
+            p = p_prism;
+            q = q_prism;
+
             if (key_frames_evo->size() == 0) {
                 key_frames_evo->push_back(myTf(q, p).Pose6D(t));
                 key_frames_evo->points.back().intensity =
