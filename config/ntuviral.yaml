@@ -60,11 +60,11 @@ N_SUB_SEG:          4
 
 ########### todo leaf_size   ##########
 # Downsampling grid size, chose -1 for no downsampling
-leaf_size:          0.5          # Downsample scale of input pointcloud, also the scale of ufomap leaf, original 0.05
+leaf_size:          0.05          # Downsample scale of input pointcloud, also the scale of ufomap leaf, original 0.05
 assoc_spacing:      0.8
 surfel_map_depth:   16
 surfel_min_point:   10
-surfel_min_depth:   1
+surfel_min_depth:   3
 surfel_query_depth: 6             # Equal to Dmax + 1. Dmax is defined in the paper
 surfel_intsect_rad: 0.1           # r in the the paper
 surfel_min_plnrty:  0.6
