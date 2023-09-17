@@ -292,6 +292,8 @@ private:
     string log_dir = "/home/tmn";
     std::ofstream loop_log_file;
 
+    // for ground truth evaluation
+    Matrix4d extrinsic_prism;
 public:
     // Destructor
     ~Estimator() {}
@@ -472,6 +474,13 @@ public:
         loop_log_file.open(log_dir + "/loop_log.csv");
         loop_log_file.precision(std::numeric_limits<double>::digits10 + 1);
         // loop_log_file.close();
+
+        //        prism_extr
+        vector<double> prism_extr = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+        nh_ptr->getParam("/prism_extr", prism_extr);
+        extrinsic_prism = Matrix<double, 4, 4, RowMajor>(&prism_extr);
+        cout << "extrinsic_prism: " << endl;
+        cout << extrinsic_prism << endl;
     }
 
     bool GetBoolParam(string param, bool default_value)
