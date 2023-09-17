@@ -293,7 +293,9 @@ private:
     std::ofstream loop_log_file;
 
     // for ground truth evaluation
-    Matrix4d extrinsic_prism, r_bs;
+    Matrix4d extrinsic_prism;
+    Matrix3d r_bs;
+    Quaternd q_bs;
     Vector3d t_bs;
 public:
     // Destructor
@@ -482,12 +484,13 @@ public:
         extrinsic_prism = Matrix<double, 4, 4, RowMajor>(&prism_extr[0]);
         cout << "extrinsic_prism: " << endl;
         cout << extrinsic_prism << endl;
-        Vector3d t_bs = extrinsic_prism.block<3, 1>(0, 3);
+        t_bs = extrinsic_prism.block<3, 1>(0, 3);
         cout << "prism t: " << endl;
         cout << t_bs.transpose() << endl;
-        Matrix<double, 3, 3> r_bs = extrinsic_prism.block<3, 3>(0,0);
+        r_bs =  extrinsic_prism.block<3, 3>(0,0);
         cout << "prism rotation: " << endl;
         cout << r_bs << endl;
+        q_bs = Quaternd(r_bs);
 
     }
 
@@ -1768,7 +1771,7 @@ public:
 
             // prism = r_wb * t_bs + t_wb
             Vector3d p_prism = q * t_bs + p;
-            Quaternd q_prism = q * r_bs;
+            Quaternd q_prism = q * q_bs;
             p = p_prism;
             q = q_prism;
 
