@@ -41,6 +41,9 @@
       <param name="/loop_en"  type="int"    value="$(arg loop_en)" />
       <param name="/log_dir"  type="string" value="$(arg exp_log_dir)" />
 
+      <!-- Run the velodyne to ouster converter -->
+      <node pkg="slict" required="true" type="slict_velodyne_to_ouster" name="slict_velodyne_to_ouster" respawn="false" output="log"/>
+
       <!-- Run the sensor sync -->
       <node pkg="slict" type="slict_sensorsync" name="slict_sensorsync" respawn="false" output="log" required="true"/>
 
