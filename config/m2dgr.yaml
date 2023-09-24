@@ -120,4 +120,4 @@ debug_exit:        -1
 publish_map:        0
 
 # Log directory
-log_dir:            "/home/tmn/slict_log/m2dgr"
+log_dir:            "/home/slict_log/m2dgr"
