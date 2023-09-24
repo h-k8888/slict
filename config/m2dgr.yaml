@@ -37,10 +37,10 @@ imu_topic:          "/handsfree/imu"
 GRAV:               9.80511
 
 # IMU noises
-GYR_N:              1.0e-4
-GYR_W:              0.1
-ACC_N:              1.0e-4
-ACC_W:              0.1
+GYR_N:              2.3417543020438883e-03
+GYR_W:              1.4428407712885209e-05   #bias
+ACC_N:              3.7686306102624571e-02
+ACC_W:              1.1416642385952368e-03   #bias
 
 # Weightage of a basic lidar factor
 lidar_weight:       1.0
