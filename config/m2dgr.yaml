@@ -19,7 +19,14 @@ lidar_extr:         [
   0.0,  0.0, -0.1,  1.000
 ]
 
-#  T_Body_Prism
+##  T_Body_Prism , GNSS
+#prism_extr: [
+#  1.0,  0.0,  0.0, 0.16,
+#  0.0,  1.0,  0.0, 0.0,
+#  0.0,  0.0,  1.0, 0.84,
+#  0.0,  0.0,  0.0, 0.0
+#]
+## LiDAR
 prism_extr: [
   1.0,  0.0,  0.0, 0.27255,
   0.0,  1.0,  0.0, -0.00053,
@@ -113,4 +120,4 @@ debug_exit:        -1
 publish_map:        0
 
 # Log directory
-log_dir:            "~/slict_m2dgr/"
+log_dir:            "/home/tmn/slict_log/m2dgr"
