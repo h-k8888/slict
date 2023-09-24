@@ -85,11 +85,13 @@ public:
             dst.z = src.z;
             dst.intensity = src.intensity * hsToOusterIntensity;
             dst.ring = src.ring;
-            dst.t = src.time * 1e9f;
-            dst.range = sqrt(src.x * src.x + src.y * src.y + src.z * src.z);
+//            dst.t = src.time * 1e9f;
+            dst.t = (src.time + 0.1) * 1e9f;
+//            dst.range = sqrt(src.x * src.x + src.y * src.y + src.z * src.z);
+            dst.range = sqrt(src.x * src.x + src.y * src.y + src.z * src.z)*1000.0;
         }
 
-        Util::publishCloud(ousterCloudPub, laserCloudOuster, msgIn->header.stamp, msgIn->header.frame_id);
+        Util::publishCloud(ousterCloudPub, laserCloudOuster, msgIn->header.stamp - ros::Duration(0.1), msgIn->header.frame_id);
     }
 };
 
