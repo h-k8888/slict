@@ -1775,34 +1775,35 @@ public:
             p = p_prism;
             q = q_prism;
 
-            if (key_frames_evo->size() == 0) {
-                key_frames_evo->push_back(myTf(q, p).Pose6D(t));
-                key_frames_evo->points.back().intensity =
-                        key_frames_evo->size() - 1;   // Use intensity to store keyframe id
-            } else {
-                const PointPose& kf_last = key_frames_evo->points.back(); //todo
-                Vector3d d_p;
-                d_p << kf_last.x, kf_last.y, kf_last.z;
-                d_p = d_p - p;
-                bool far_distance = d_p.norm() > kf_min_dis;
-
-//                // Collect the angle difference
-//                Quaternionf Qa(kfTempPose->points[kf_idx].qw,
-//                               kfTempPose->points[kf_idx].qx,
-//                               kfTempPose->points[kf_idx].qy,
-//                               kfTempPose->points[kf_idx].qz);
-
-                Quaternionf Qb(kf_last.qw, kf_last.qx, kf_last.qy, kf_last.qz);
-                bool large_angle = false;
-                // If the angle is more than 10 degrees, add this to the key pose
-                if (fabs(Util::angleDiff(q.cast<float>(), Qb)) > kf_min_angle)
-                    large_angle = true;
-
-                if (far_distance || large_angle)
-                {
-                    key_frames_evo->push_back(myTf(q, p).Pose6D(t));
-                }
-            }
+            key_frames_evo->push_back(myTf(q, p).Pose6D(t));
+//            if (key_frames_evo->size() == 0) {
+//                key_frames_evo->push_back(myTf(q, p).Pose6D(t));
+//                key_frames_evo->points.back().intensity =
+//                        key_frames_evo->size() - 1;   // Use intensity to store keyframe id
+//            } else {
+//                const PointPose& kf_last = key_frames_evo->points.back(); //todo
+//                Vector3d d_p;
+//                d_p << kf_last.x, kf_last.y, kf_last.z;
+//                d_p = d_p - p;
+//                bool far_distance = d_p.norm() > kf_min_dis;
+//
+////                // Collect the angle difference
+////                Quaternionf Qa(kfTempPose->points[kf_idx].qw,
+////                               kfTempPose->points[kf_idx].qx,
+////                               kfTempPose->points[kf_idx].qy,
+////                               kfTempPose->points[kf_idx].qz);
+//
+//                Quaternionf Qb(kf_last.qw, kf_last.qx, kf_last.qy, kf_last.qz);
+//                bool large_angle = false;
+//                // If the angle is more than 10 degrees, add this to the key pose
+//                if (fabs(Util::angleDiff(q.cast<float>(), Qb)) > kf_min_angle)
+//                    large_angle = true;
+//
+//                if (far_distance || large_angle)
+//                {
+//                    key_frames_evo->push_back(myTf(q, p).Pose6D(t));
+//                }
+//            }
         }
     }
 
